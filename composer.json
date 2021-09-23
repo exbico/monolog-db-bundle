@@ -1,0 +1,34 @@
+{
+  "name": "exbico/monolog-db-bundle",
+  "description": "Symfony MonologDb Bundle",
+  "keywords": ["symfony", "monolog", "bundle"],
+  "type": "symfony-bundle",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/exbico/monolog-db-bundle/contributors"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "monolog/monolog": "^2.3",
+    "symfony/framework-bundle": "^5.0|^6.0",
+    "symfony/console": "^5.0|^6.0",
+    "ramsey/uuid": "^4.0",
+    "doctrine/doctrine-bundle": "^2.4"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Exbico\\MonologDbBundle\\": "src/"
+    }
+  }
+}
