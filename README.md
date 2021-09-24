@@ -37,7 +37,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension(
         'exbico_monolog_db',
         [
-            'connection'   => 'doctrine.dbal.log_connection',
+            'connection'   => 'doctrine.dbal.connection',
             'history_size' => 2,
         ],
     );
