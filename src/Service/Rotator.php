@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Exbico\MonologDbBundle\Service;
 
-use App\Infrastructure\Log\LogRotationException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception;
