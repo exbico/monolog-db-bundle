@@ -1,0 +1,10 @@
+parameters:
+    level: 9
+
+    paths:
+        - src
+
+    excludePaths:
+        - src/DependencyInjection/Configuration.php
+
+    checkGenericClassInNonGenericObjectType: false

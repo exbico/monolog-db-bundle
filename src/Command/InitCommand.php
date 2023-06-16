@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Exbico\MonologDbBundle\Command;
 
-use Exbico\MonologDbBundle\Service\InitializerInterface;
+use Exbico\MonologDbBundle\Service\Initialization\InitializerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,8 +15,11 @@ final class InitCommand extends Command
 {
     protected static $defaultName = 'log:init';
 
-    public function __construct(private InitializerInterface $initializer)
-    {
+    public function __construct(
+        private InitializerInterface $initializer,
+        /** @var array<string> $tables */
+        private array $tables,
+    ) {
         parent::__construct();
     }
 
@@ -32,7 +35,7 @@ final class InitCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         try {
-            foreach ($this->initializer->init() as $result) {
+            foreach ($this->initializer->init($this->tables) as $result) {
                 $io->success($result);
             }
             $io->success('Log initialization successfully completed.');

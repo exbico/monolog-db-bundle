@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Exbico\MonologDbBundle\DependencyInjection;
 
-use Exbico\MonologDbBundle\Service\Rotator;
 use Exception;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class ExbicoMonologDbExtension extends Extension
 {
     /**
-     * @param array $configs
+     * @param array<array-key,mixed> $configs
      * @param ContainerBuilder $container
      * @throws Exception
      */
@@ -22,14 +21,8 @@ final class ExbicoMonologDbExtension extends Extension
     {
         $loader = new PhpFileLoader(
             $container,
-            new FileLocator(__DIR__ . '/../Resources/config')
+            new FileLocator(__DIR__ . '/../Resources/config'),
         );
         $loader->load('services.php');
-
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $definition = $container->getDefinition(Rotator::class);
-        $definition->replaceArgument(1, $config['history_size']);
     }
 }
