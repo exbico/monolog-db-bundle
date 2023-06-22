@@ -13,8 +13,8 @@
   ],
   "require": {
     "php": "^8.0",
-    "doctrine/doctrine-bundle": "^2.4",
-    "exbico/monolog-db-handler": "^1.0",
+    "doctrine/dbal": "^2.9|^3.0",
+    "exbico/monolog-db-handler": "^1.0|^2.0",
     "symfony/console": "^5.0|^6.0",
     "symfony/framework-bundle": "^5.0|^6.0",
     "symfony/monolog-bundle": "^3.7"
