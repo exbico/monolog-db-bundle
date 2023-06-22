@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Exbico\MonologDbBundle\Command;
 
-use Exbico\MonologDbBundle\Service\RotatorInterface;
+use Exbico\MonologDbBundle\Service\Rotation\RotationConfig;
+use Exbico\MonologDbBundle\Service\Rotation\RotatorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,8 +20,12 @@ final class RotateCommand extends Command
 
     protected static $defaultName = 'log:rotate';
 
-    public function __construct(private RotatorInterface $rotator)
-    {
+    public function __construct(
+        private RotatorInterface $rotator,
+        private RotationConfig $config,
+        /** @var array<string> $tables */
+        private array $tables,
+    ) {
         parent::__construct();
     }
 
@@ -54,9 +59,9 @@ final class RotateCommand extends Command
                 if (!is_numeric($historySize)) {
                     throw new InvalidArgumentException('HistorySize argument should be an integer.');
                 }
-                $historySize = (int)$historySize;
+                $this->config = $this->config->withHistorySize((int)$historySize);
             }
-            foreach ($this->rotator->rotate($historySize) as $result) {
+            foreach ($this->rotator->rotate($this->tables, $this->config) as $result) {
                 $io->success($result);
             }
             $io->success('Log rotation successfully completed.');

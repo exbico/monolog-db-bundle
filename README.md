@@ -6,18 +6,9 @@ MONOLOG DB BUNDLE
 ## INSTALLATION
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-Either run
-
 ```bash
 composer require exbico/monolog-db-bundle
 ```
-or add
-
-```
-"exbico/monolog-db-bundle": "*"
-```
-
-to the require section of your application's `composer.json` file.
 
 Your bundle should be automatically enabled by Flex. In case you don't use Flex, you'll need to manually enable the bundle by adding the following line in the `config/bundles.php` file of your project:
 
@@ -38,7 +29,24 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         'exbico_monolog_db',
         [
             'connection'   => 'doctrine.dbal.connection',
-            'history_size' => 2,
+            'levels'       => [
+                /** The key-value array, where the key is the name of the level,
+                 * and the value is the name of the table to save logs to.
+                 * A Null value means that this level is not processed.
+                 */
+                'emergency' => 'log_emergency',
+                'alert'     => 'log_alert',
+                'critical'  => 'log_critical'
+                'error'     => 'log_error',
+                'warning'   => 'log_warning',
+                'notice'    => 'log_notice',
+                'info'      => 'log_info',
+                'debug'     => 'log_debug',
+            ],
+            'rotation'   => [
+                'history_size' => 2,
+                'date_format'  => 'YmdHis',
+            ],
         ],
     );
 };
@@ -57,7 +65,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'handlers' => [
                 'db'                => [
                     'type'     => 'service',
-                    'id'       => 'exbico.monolog_db_handler',
+                    'id'       => 'exbico_monolog_db.handler',
                     'level'    => 'debug',
                 ],
             ],

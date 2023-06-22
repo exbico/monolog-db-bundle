@@ -2,35 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Exbico\MonologDbBundle\Service;
+namespace Exbico\MonologDbBundle\Service\Initialization;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\Exception;
+use Exbico\MonologDbBundle\Service\TableCreation\TableCreatorInterface;
 use Throwable;
 
 final class Initializer implements InitializerInterface
 {
-    use CreateTableTrait;
-
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private TableCreatorInterface $tableCreator,
+    ) {
     }
 
     /**
-     * @return array
+     * @param array<string> $tables
+     * @return list<string>
      * @throws LogInitializationException
-     * @throws ConnectionException
-     * @throws Exception
      */
-    public function init(): array
+    public function init(array $tables): array
     {
         $result = [];
 
         try {
             $this->connection->beginTransaction();
-            foreach (self::TABLES as $table) {
-                $result[] = $this->createTable($this->connection, $table);
+            foreach ($tables as $table) {
+                $result[] = $this->tableCreator->create($table);
             }
 
             $this->connection->commit();
