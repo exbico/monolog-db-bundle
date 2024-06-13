@@ -32,9 +32,10 @@ final class Rotator implements RotatorInterface
 
         try {
             $this->connection->beginTransaction();
+            $schemaManager = $this->getSchemaManager();
             foreach ($tables as $table) {
-                $result[] = $this->renameTable($table, $config);
-                $result[] = $this->tableCreator->create($table);
+                $result[] = $this->renameTable($table, $config, $schemaManager);
+                $result[] = $this->tableCreator->create($table, $schemaManager);
                 array_push($result, ...$this->deleteOldVersions($table, $config));
             }
 
@@ -51,12 +52,15 @@ final class Rotator implements RotatorInterface
 
     /**
      * @param string $tableName
+     * @param AbstractSchemaManager $schemaManager
      * @return string
      * @throws Exception
      */
-    private function renameTable(string $tableName, RotationConfig $config): string
-    {
-        $schemaManager = $this->getSchemaManager();
+    private function renameTable(
+        string $tableName,
+        RotationConfig $config,
+        AbstractSchemaManager $schemaManager,
+    ): string {
         $newTableName = $tableName . '_' . date($config->dateFormat);
 
         $schemaManager->renameTable($tableName, $newTableName);
