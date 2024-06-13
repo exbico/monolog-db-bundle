@@ -60,8 +60,7 @@ final class Rotator implements RotatorInterface
         string $tableName,
         RotationConfig $config,
         AbstractSchemaManager $schemaManager,
-    ): string
-    {
+    ): string {
         $newTableName = $tableName . '_' . date($config->dateFormat);
 
         $schemaManager->renameTable($tableName, $newTableName);
