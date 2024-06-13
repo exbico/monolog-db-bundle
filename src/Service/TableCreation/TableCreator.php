@@ -25,14 +25,16 @@ final class TableCreator implements TableCreatorInterface
     }
 
     /**
-     * @param string $name
+     * @param string                     $name
+     * @param AbstractSchemaManager|null $schemaManager
+     *
      * @return string
      * @throws TableCreationException
      */
-    public function create(string $name): string
+    public function create(string $name, ?AbstractSchemaManager $schemaManager = null): string
     {
         try {
-            $schemaManager = $this->getSchemaManager();
+            $schemaManager = $schemaManager ?? $this->getSchemaManager();
 
             $table = $this->getTableInstance($name);
 
